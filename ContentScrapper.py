@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-
+import json
 
 class RawScrapper:
     def __init__(self):
@@ -141,6 +141,8 @@ class DataFrameCompilation(RawScrapper):
 if __name__ == "__main__":
     DF_Obj=DataFrameCompilation()
     imdb_content = DF_Obj.scrape_content(num=15)
-    imdb_content.to_csv('movies.csv',index=None)
-    dataframe = pd.read_csv('movies.csv')
-    print(dataframe)
+    #imdb_content.to_csv('movies.csv',index=None)
+    json_dataframe = imdb_content.to_json()
+    #print(json_dataframe)
+    with open("srch_data.json",'r+') as fo:
+        fo.write(json_dataframe)

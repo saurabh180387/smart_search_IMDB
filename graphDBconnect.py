@@ -1,27 +1,38 @@
+import logging
 from neo4j import GraphDatabase
+from neo4j.exceptions import ServiceUnavailable  
 
-class HelloWorldExample:
+url = "neo4j://localhost:7687"
+driver = GraphDatabase.driver(url, auth=("", "")) ##removed authentication for testing
 
-    def __init__(self, uri, user, password):
-        self.driver = GraphDatabase.driver(uri, auth=(user, password))
+def store_json_data(self,message):
+    query="WITH 'file:///srch_data.json' as uri \ 
+       CAL apoc.load.json(url) YIELD value  \
+       UNWND  value.CVE_Items as data \
+       RETRN data limit 5"
+    with driver.session() as session:
+        session.write_transaction(query,file_name)
 
-    def close(self):
-        self.driver.close()
+def find_content(self, search_key):
+        with driver.session() as session:
+            result = session.read_transaction(find_movie_record, movie_name)
+            for record in result:
+                print("Found movie: {record}".format(record=record))
 
-    def print_greeting(self, message):
-        with self.driver.session() as session:
-            greeting = session.execute_write(self._create_and_return_greeting, message)
-            print(greeting)
+def find_movie_record(tx, name):
+    movies = []
+    result = tx.run("MATCH (a:Movie) "
+                    "WHERE a.name = $name "
+                    "RETURN f.name AS movies", name=name)
+    for record in result:
+        movies.append(record["Movie"])
+    return movies
 
-    @staticmethod
-    def _create_and_return_greeting(tx, message):
-        result = tx.run("CREATE (a:Greeting) "
-                        "SET a.message = $message "
-                        "RETURN a.message + ', from node ' + id(a)", message=message)
-        return result.single()[0]
+
 
 
 if __name__ == "__main__":
-    greeter = HelloWorldExample("bolt://localhost:7687", "", "")
-    greeter.print_greeting("hello, world")
-    greeter.close()
+    file_name="srch_data.json"
+    store_json_data(message='')
+    find_content(search_key='Inception')
+    driver.close()
