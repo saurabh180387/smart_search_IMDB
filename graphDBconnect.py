@@ -43,16 +43,13 @@ if _name_ == "_main_":
     with driver.session() as session:
         #tx=session.begin_transaction 
         session.execute_write(create_person, "Vikram")
-        session.execute_write(create_friend_of, "Vikram", "Saurabh")
-        session.execute_write(create_friend_of, "Vikram", "Sanjay")
-
     driver.close()
 """
 
 
 if __name__ == "__main__":
     #file_path="srch_data.json"
-    store_json_data(param1,param2)
+    #store_json_data(param1,param2)
     with driver.session() as session:
         session.read_transaction(find_movie_record, "Inception") #similar to execute_read 
         session.execute_write(store_imdb_clone,"Test")
