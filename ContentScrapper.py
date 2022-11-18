@@ -12,7 +12,7 @@ class RawScrapper:
         response=requests.get(url)
         # check successfull response
         if response.status_code != 200:
-            raise Exception(f'Failed to load page {topic_url}')
+            raise Exception(f'Failed to load page {"topic_url"}')
         # Parse using BeautifulSoup
         doc = BeautifulSoup(response.text, 'html.parser')
         return doc
@@ -143,6 +143,8 @@ if __name__ == "__main__":
     imdb_content = DF_Obj.scrape_content(num=15)
     #imdb_content.to_csv('movies.csv',index=None)
     json_dataframe = imdb_content.to_json()
-    #print(json_dataframe)
+    print(json_dataframe)
+    """
     with open("srch_data.json",'r+') as fo:
         fo.write(json_dataframe)
+    """
